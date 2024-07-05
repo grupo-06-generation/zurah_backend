@@ -16,10 +16,11 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank(message = "O nome é obrigatório")
+	@NotBlank(message = "The name is mandatory")
+	@Size(max = 255, message = "The name_cat attribute must contain a minimum of 1 and a maximum of 255 characters")
 	private String name_cat;
 	
-	@Size(min = 5, max = 255, message = "O atributo description deve conter no mínimo 5 e no máximo 255 caracteres")
+	@Size(min = 5, max = 255, message = "The description attribute must contain a minimum of 5 and a maximum of 255 characters8")
 	private String description;
 
 	public Long getId() {

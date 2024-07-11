@@ -22,14 +22,11 @@ public class CategoryController {
 	@Autowired
 	public CategoryRepository categoryRepository;
 
-	// list All()
 	@GetMapping
 	public ResponseEntity<List<Category>> getAll() {
 		return ResponseEntity.ok(categoryRepository.findAll());
 	}
 
-	// get product or ID
-	// http://localhost:8080/category/1
 	@GetMapping("/{id}")
 	public ResponseEntity<Category> getById(@PathVariable Long id) {
 		return categoryRepository.findById(id)
@@ -37,8 +34,6 @@ public class CategoryController {
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 
-	// get products where contain "name"
-	// http://localhost:8080/category/name/a
 	@GetMapping("/name/{name}")
 	public ResponseEntity<List<Category>> getByName(@PathVariable String name) {
 		return ResponseEntity.ok(categoryRepository.findAllByNameContainingIgnoreCase(name));

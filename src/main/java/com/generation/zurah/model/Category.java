@@ -17,7 +17,7 @@ public class Category {
 	private Long id;
 
 	@NotBlank(message = "The name is mandatory")
-	@Size(max = 255, message = "The name_cat attribute must contain a minimum of 1 and a maximum of 255 characters")
+	@Size(max = 255, message = "The name attribute must contain a minimum of 1 and a maximum of 255 characters")
 	private String name;
 
 	@Size(min = 5, max = 255, message = "The description attribute must contain a minimum of 5 and a maximum of 255 characters8")
@@ -35,7 +35,7 @@ public class Category {
 		return name;
 	}
 
-	public void setName(String name_cat) {
+	public void setName(String name) {
 		this.name = name;
 	}
 

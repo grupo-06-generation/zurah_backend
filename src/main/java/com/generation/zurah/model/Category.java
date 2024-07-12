@@ -10,7 +10,6 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_category")
-
 public class Category {
 
 	@Id

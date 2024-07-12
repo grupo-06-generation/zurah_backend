@@ -14,31 +14,31 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table(name = "tb_users")
 public class User {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@NotBlank(message = "O atributo nome é obrigatório")
-	@Size(min = 3, max = 255, message = "O nome precisa ter no mínimo 3 caracteres e no máximo 255 caracteres")
+
+	@NotBlank(message = "The atribute name is mandatory")
+	@Size(min = 3, max = 255, message = "The name must have at least 3 characters to 255 characters")
 	private String name;
-	
+
 	@Email(message = "Email should be valid")
 	@NotEmpty(message = "Email cannot be empty")
 	private String email;
-	
-	@NotBlank(message = "O atributo senha é obrigatório")
-	@Size(min = 8, message = "A senha precisa ter no mínimo 8 caracteres")
-	private String password; 
-	
+
+	@NotBlank(message = "The atribute password is mandatory")
+	@Size(min = 8, message = "The atribute password must have at least 8 characters")
+	private String password;
+
 	@NotNull
-	private int is_seller; 
-	
-	@Size(max = 1000, message = "O link da foto precisa ter no máximo 1000 caracteres")
+	private int is_seller;
+
+	@Size(max = 1000, message = "The photo atribute has a limit of 1000 characters")
 	private String photo;
-	
-	@Size(max = 255, message = "O endereço precisa ter no máximo 255 caracteres")
-	private String adress;
+
+	@Size(max = 255, message = "The address atribute has a limit of 255 characters")
+	private String address;
 
 	public Long getId() {
 		return id;
@@ -88,13 +88,12 @@ public class User {
 		this.photo = photo;
 	}
 
-	public String getAdress() {
-		return adress;
+	public String getAddress() {
+		return address;
 	}
 
 	public void setAdress(String adress) {
-		this.adress = adress;
+		this.address = adress;
 	}
 
-	
 }

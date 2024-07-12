@@ -1,7 +1,7 @@
 package com.generation.zurah.model;
 
 import java.math.BigDecimal;
-
+import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -23,27 +23,27 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "O atributo nome é obrigatório")
-	@Size(min = 3, max = 255, message = "O nome precisa ter no mínimo 3 caracteres e no máximo 255 caracteres")
+	@NotBlank(message = "The atribute name is mandatory")
+	@Size(min = 3, max = 255, message = "The name must have at least 3 characters to 255 characters")
 	private String name;
 
-	@NotBlank(message = "O atributo é obrigatório e deve seguir a ordem: mês-dia-ano")
-	private String expire;
+	@NotNull(message = "The expire atribute is mandatory and must follow this format: yyyy-MM-dd")
+	private LocalDate expire;
 
-	@NotNull(message = "O atributo preço obrigatório")
+	@NotNull(message = "The price atribute is mandatory")
 	@Column(precision = 6, scale = 2)
 	private BigDecimal price;
 
-	@NotNull(message = "O atributo quantidade é obrigatório")
+	@NotNull(message = "The quantity atribute is mandatory")
 	private int quantity;
 
-	@Size(max = 1000, message = "O link da foto precisa ter no máximo 1000 caracteres")
+	@Size(max = 1000, message = "The photo atribute has a limit of 1000 characters")
 	private String photo;
 
-	@Size(max = 255, message = "O atributo descrição precisa ter no máximo 255 caracteres")
+	@Size(max = 255, message = "The description atribute has a limit of 255 characters")
 	private String description;
 
-	@Size(max = 255, message = "O atributo região precisa ter no máximo 255 caracteres")
+	@Size(max = 255, message = "The region atribute has a limit of 255 characters")
 	private String region;
 
 	@ManyToOne
@@ -66,11 +66,11 @@ public class Product {
 		this.name = name;
 	}
 
-	public String getExpire() {
+	public LocalDate getExpire() {
 		return expire;
 	}
 
-	public void setExpire(String expire) {
+	public void setExpire(LocalDate expire) {
 		this.expire = expire;
 	}
 
@@ -122,5 +122,4 @@ public class Product {
 		this.category = category;
 	}
 
-	
 }

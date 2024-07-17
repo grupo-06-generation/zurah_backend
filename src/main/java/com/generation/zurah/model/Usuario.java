@@ -11,8 +11,8 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_users")
-public class User {
+@Table(name = "tb_usuario")
+public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class User {
 
 	@Email(message = "Email should be valid")
 	@NotEmpty(message = "Email cannot be empty")
-	private String email;
+	private String usuario;
 
 	@NotBlank(message = "The atribute password is mandatory")
 	@Size(min = 8, message = "The atribute password must have at least 8 characters")
@@ -39,8 +39,8 @@ public class User {
 	@Size(max = 255, message = "The address atribute has a limit of 255 characters")
 	private String address;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties("user")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties("usuario")
 	private List<Product> product;
 
 	public Long getId() {
@@ -59,12 +59,12 @@ public class User {
 		this.name = name;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getUsuario() {
+		return usuario;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 
 	public String getPassword() {

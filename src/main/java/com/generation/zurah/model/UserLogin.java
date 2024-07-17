@@ -4,7 +4,7 @@ public class UserLogin {
 	
 	private Long id;
 	private String name;
-	private String email;
+	private String usuario;
 	private String password;
 	private String photo;
 	private int is_seller;
@@ -26,12 +26,12 @@ public class UserLogin {
 		this.name = name;
 	}
 	
-	public String getEmail() {
-		return email;
+	public String getUsuario() {
+		return usuario;
 	}
 	
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 	
 	public String getPassword() {

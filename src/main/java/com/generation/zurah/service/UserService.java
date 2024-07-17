@@ -55,7 +55,7 @@ public class UserService {
 		return Optional.empty();
 	}
 	
-	public Optional<UserLogin> authenticateUser(Optional<UserLogin> userLogin){
+	public Optional<UserLogin> authenticateUsers(Optional<UserLogin> userLogin){
 		
 		var credentials = new UsernamePasswordAuthenticationToken(userLogin.get().getUsuario(), userLogin.get().getPassword());
 		

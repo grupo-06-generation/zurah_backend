@@ -2,6 +2,7 @@ package com.generation.zurah.service;
 
 import java.util.Optional;
 
+import com.generation.zurah.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,16 +12,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.generation.zurah.model.User;
 import com.generation.zurah.model.UserLogin;
-import com.generation.zurah.repository.UserRepository;
+import com.generation.zurah.repository.UsuarioRepository;
 import com.generation.zurah.security.JwtService;
 
 @Service
 public class UserService {
 	
 	@Autowired
-	private UserRepository userRepository;
+	private UsuarioRepository usuarioRepository;
 	
 	@Autowired
 	private JwtService jwtService;
@@ -28,28 +28,28 @@ public class UserService {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
-	public Optional<User> registerUser(User user) {
+	public Optional<Usuario> registerUser(Usuario usuario) {
 		
-		if(userRepository.findByUser(user.getEmail()).isPresent())
+		if(usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
 			return Optional.empty();
 		
-		user.setPassword(encryptPassword(user.getPassword()));
+		usuario.setPassword(encryptPassword(usuario.getPassword()));
 		
-		return Optional.of(userRepository.save(user));
+		return Optional.of(usuarioRepository.save(usuario));
 	}
 	
-	public Optional<User> updateUser(User user) {
+	public Optional<Usuario> updateUser(Usuario usuario) {
 		
-		if (userRepository.findById(user.getId()).isPresent()) {
+		if (usuarioRepository.findById(usuario.getId()).isPresent()) {
 			
-			Optional<User> searchUser = userRepository.findByUser(user.getEmail());
+			Optional<Usuario> searchUsuario = usuarioRepository.findByUsuario(usuario.getUsuario());
 			
-			if((searchUser.isPresent()) && (searchUser.get().getId() != user.getId()))
+			if((searchUsuario.isPresent()) && (searchUsuario.get().getId() != usuario.getId()))
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists!", null);
 			
-			user.setPassword(encryptPassword(user.getPassword()));
+			usuario.setPassword(encryptPassword(usuario.getPassword()));
 			
-			return Optional.ofNullable(userRepository.save(user));
+			return Optional.ofNullable(usuarioRepository.save(usuario));
 		}
 		
 		return Optional.empty();
@@ -57,13 +57,13 @@ public class UserService {
 	
 	public Optional<UserLogin> authenticateUser(Optional<UserLogin> userLogin){
 		
-		var credentials = new UsernamePasswordAuthenticationToken(userLogin.get().getEmail(), userLogin.get().getPassword());
+		var credentials = new UsernamePasswordAuthenticationToken(userLogin.get().getUsuario(), userLogin.get().getPassword());
 		
 		Authentication authentication = authenticationManager.authenticate(credentials);
 		
 		if (authentication.isAuthenticated()) {
 			
-			Optional<User> user = userRepository.findByUser(userLogin.get().getEmail());
+			Optional<Usuario> user = usuarioRepository.findByUsuario(userLogin.get().getUsuario());
 			
 			if(user.isPresent()) {
 				
@@ -71,7 +71,7 @@ public class UserService {
 				userLogin.get().setName(user.get().getName());
 				userLogin.get().setPhoto(user.get().getPhoto());
 				userLogin.get().setIs_seller(user.get().getIs_seller());
-				userLogin.get().setToken(generateToken(userLogin.get().getEmail()));
+				userLogin.get().setToken(generateToken(userLogin.get().getUsuario()));
 				userLogin.get().setPassword("");
 				
 				return userLogin;

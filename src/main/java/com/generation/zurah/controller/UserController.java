@@ -3,6 +3,7 @@ package com.generation.zurah.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.generation.zurah.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.generation.zurah.model.User;
 import com.generation.zurah.model.UserLogin;
-import com.generation.zurah.repository.UserRepository;
+import com.generation.zurah.repository.UsuarioRepository;
 import com.generation.zurah.service.UserService;
 
 import jakarta.validation.Valid;
@@ -31,17 +31,16 @@ public class UserController {
 	private UserService userService;
 
 	@Autowired
-	private UserRepository userRepository;
+	private UsuarioRepository usuarioRepository;
 
 	@GetMapping("/all")
-	public ResponseEntity<List<User>> getAll() {
-
-		return ResponseEntity.ok(userRepository.findAll());
+	public ResponseEntity<List<Usuario>> getAll() {
+		return ResponseEntity.ok(usuarioRepository.findAll());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<User> getById(@PathVariable Long id) {
-		return userRepository.findById(id)
+	public ResponseEntity<Usuario> getById(@PathVariable Long id) {
+		return usuarioRepository.findById(id)
 				.map(ResponseEntity::ok)
 				.orElse(ResponseEntity.notFound().build());
 	}
@@ -54,15 +53,15 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<User> postUser(@Valid @RequestBody User user) {
-		return userService.registerUser(user)
+	public ResponseEntity<Usuario> postUser(@Valid @RequestBody Usuario usuario) {
+		return userService.registerUser(usuario)
 				.map(response -> ResponseEntity.status(HttpStatus.CREATED).body(response))
 				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 	}
 
 	@PutMapping("/update")
-	public ResponseEntity<User> putUser(@Valid @RequestBody User user) {
-		return userService.updateUser(user)
+	public ResponseEntity<Usuario> putUser(@Valid @RequestBody Usuario usuario) {
+		return userService.updateUser(usuario)
 				.map(response -> ResponseEntity.status(HttpStatus.OK).body(response))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}

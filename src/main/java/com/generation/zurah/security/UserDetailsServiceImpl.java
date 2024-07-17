@@ -1,7 +1,7 @@
 package com.generation.zurah.security;
 
-import com.generation.zurah.model.User;
-import com.generation.zurah.repository.UserRepository;
+import com.generation.zurah.model.Usuario;
+import com.generation.zurah.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,15 +16,15 @@ import java.util.Optional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
 
-        Optional<User> user = userRepository.findByUser(userEmail);
+        Optional<Usuario> usuario = usuarioRepository.findByUsuario(userEmail);
 
-        if (user.isPresent())
-            return new UserDetailsImpl(user.get());
+        if (usuario.isPresent())
+            return new UserDetailsImpl(usuario.get());
         else
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 

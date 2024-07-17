@@ -41,7 +41,9 @@ public class UserController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<User> getById(@PathVariable Long id) {
-		return userRepository.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+		return userRepository.findById(id)
+				.map(ResponseEntity::ok)
+				.orElse(ResponseEntity.notFound().build());
 	}
 
 	@PostMapping("/login")
@@ -52,14 +54,16 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<User> postUser(@RequestBody @Valid User user) {
-		return userService.registerUser(user).map(response -> ResponseEntity.status(HttpStatus.CREATED).body(response))
+	public ResponseEntity<User> postUser(@Valid @RequestBody User user) {
+		return userService.registerUser(user)
+				.map(response -> ResponseEntity.status(HttpStatus.CREATED).body(response))
 				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 	}
 
 	@PutMapping("/update")
 	public ResponseEntity<User> putUser(@Valid @RequestBody User user) {
-		return userService.updateUser(user).map(response -> ResponseEntity.status(HttpStatus.OK).body(response))
+		return userService.updateUser(user)
+				.map(response -> ResponseEntity.status(HttpStatus.OK).body(response))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 }

@@ -50,7 +50,7 @@ public class Usuario {
 	private String address;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties("usuario")
+	@JsonIgnoreProperties("user")
 	private List<Product> product;
 
 	public Long getId() {

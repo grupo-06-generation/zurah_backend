@@ -44,6 +44,11 @@ public class UserController {
 				.map(ResponseEntity::ok)
 				.orElse(ResponseEntity.notFound().build());
 	}
+	
+	@GetMapping("/usuario/{usuario}")
+	public ResponseEntity<List<Usuario>> getByUsuario(@PathVariable String usuario) {
+		return ResponseEntity.ok(usuarioRepository.findByUsuarioContainingIgnoreCase(usuario));
+	}
 
 	@PostMapping("/login")
 	public ResponseEntity<UserLogin> authenticateUsers(@RequestBody Optional<UserLogin> userLogin) {

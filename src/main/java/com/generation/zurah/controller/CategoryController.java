@@ -58,8 +58,6 @@ public class CategoryController {
 		if(category.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
-		
 		categoryRepository.deleteById(id);
 	}
-
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.generation.zurah.model.Usuario;
+import com.generation.zurah.model.UsuarioLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,19 +17,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.generation.zurah.model.UserLogin;
 import com.generation.zurah.repository.UsuarioRepository;
-import com.generation.zurah.service.UserService;
+import com.generation.zurah.service.UsuarioService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/usuarios")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
 
 	@Autowired
-	private UserService userService;
+	private UsuarioService usuarioService;
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -45,28 +45,28 @@ public class UserController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
-	@GetMapping("/usuario/{usuario}")
-	public ResponseEntity<List<Usuario>> getByUsuario(@PathVariable String usuario) {
-		return ResponseEntity.ok(usuarioRepository.findByUsuarioContainingIgnoreCase(usuario));
+	@GetMapping("/name/{name}")
+	public ResponseEntity<List<Usuario>> getByName(@PathVariable String name) {
+		return ResponseEntity.ok(usuarioRepository.findByNameContainingIgnoreCase(name));
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<UserLogin> authenticateUsers(@RequestBody Optional<UserLogin> userLogin) {
-		return userService.authenticateUsers(userLogin)
+	public ResponseEntity<UsuarioLogin> authenticateUsuarios(@RequestBody Optional<UsuarioLogin> usuarioLogin) {
+		return usuarioService.authenticateUsuarios(usuarioLogin)
 				.map(response -> ResponseEntity.status(HttpStatus.OK).body(response))
 				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<Usuario> postUser(@Valid @RequestBody Usuario usuario) {
-		return userService.registerUser(usuario)
+	public ResponseEntity<Usuario> postUsuario(@Valid @RequestBody Usuario usuario) {
+		return usuarioService.registerUsuario(usuario)
 				.map(response -> ResponseEntity.status(HttpStatus.CREATED).body(response))
 				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 	}
 
 	@PutMapping("/update")
-	public ResponseEntity<Usuario> putUser(@Valid @RequestBody Usuario usuario) {
-		return userService.updateUser(usuario)
+	public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario) {
+		return usuarioService.updateUsuario(usuario)
 				.map(response -> ResponseEntity.status(HttpStatus.OK).body(response))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}

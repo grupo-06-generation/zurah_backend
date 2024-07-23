@@ -3,6 +3,7 @@ package com.generation.zurah.service;
 import java.util.Optional;
 
 import com.generation.zurah.model.Usuario;
+import com.generation.zurah.model.UsuarioLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,12 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.generation.zurah.model.UserLogin;
 import com.generation.zurah.repository.UsuarioRepository;
 import com.generation.zurah.security.JwtService;
 
 @Service
-public class UserService {
+public class UsuarioService {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -28,7 +28,7 @@ public class UserService {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
-	public Optional<Usuario> registerUser(Usuario usuario) {
+	public Optional<Usuario> registerUsuario(Usuario usuario) {
 		
 		if(usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
 			return Optional.empty();
@@ -38,7 +38,7 @@ public class UserService {
 		return Optional.of(usuarioRepository.save(usuario));
 	}
 	
-	public Optional<Usuario> updateUser(Usuario usuario) {
+	public Optional<Usuario> updateUsuario(Usuario usuario) {
 		
 		if (usuarioRepository.findById(usuario.getId()).isPresent()) {
 			
@@ -55,26 +55,26 @@ public class UserService {
 		return Optional.empty();
 	}
 	
-	public Optional<UserLogin> authenticateUsers(Optional<UserLogin> userLogin){
+	public Optional<UsuarioLogin> authenticateUsuarios(Optional<UsuarioLogin> usuarioLogin){
 		
-		var credentials = new UsernamePasswordAuthenticationToken(userLogin.get().getUsuario(), userLogin.get().getPassword());
+		var credentials = new UsernamePasswordAuthenticationToken(usuarioLogin.get().getUsuario(), usuarioLogin.get().getPassword());
 		
 		Authentication authentication = authenticationManager.authenticate(credentials);
 		
 		if (authentication.isAuthenticated()) {
 			
-			Optional<Usuario> user = usuarioRepository.findByUsuario(userLogin.get().getUsuario());
+			Optional<Usuario> usuario = usuarioRepository.findByUsuario(usuarioLogin.get().getUsuario());
 			
-			if(user.isPresent()) {
+			if(usuario.isPresent()) {
 				
-				userLogin.get().setId(user.get().getId());
-				userLogin.get().setName(user.get().getName());
-				userLogin.get().setPhoto(user.get().getPhoto());
-				userLogin.get().setIs_seller(user.get().getIs_seller());
-				userLogin.get().setToken(generateToken(userLogin.get().getUsuario()));
-				userLogin.get().setPassword("");
+				usuarioLogin.get().setId(usuario.get().getId());
+				usuarioLogin.get().setName(usuario.get().getName());
+				usuarioLogin.get().setPhoto(usuario.get().getPhoto());
+				usuarioLogin.get().setIs_seller(usuario.get().getIs_seller());
+				usuarioLogin.get().setToken(generateToken(usuarioLogin.get().getUsuario()));
+				usuarioLogin.get().setPassword("");
 				
-				return userLogin;
+				return usuarioLogin;
 			}
 		}
 		
@@ -88,7 +88,7 @@ public class UserService {
 		return encoder.encode(password);
 	}
 	
-	private String generateToken(String user) {
-		return "Bearer " + jwtService.generateToken(user);
+	private String generateToken(String usuario) {
+		return "Bearer " + jwtService.generateToken(usuario);
 	}
 }

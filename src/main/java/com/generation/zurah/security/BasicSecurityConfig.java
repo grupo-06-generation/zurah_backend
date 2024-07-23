@@ -62,8 +62,8 @@ public class BasicSecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/users/login").permitAll()
-                        .requestMatchers("/users/register").permitAll()
+                        .requestMatchers("/usuarios/login").permitAll()
+                        .requestMatchers("/usuarios/register").permitAll()
                         .requestMatchers("/product").permitAll()
                         .requestMatchers("/error/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()

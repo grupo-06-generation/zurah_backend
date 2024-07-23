@@ -12,7 +12,7 @@ import com.generation.zurah.model.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	
-    public List<Usuario> findByUsuarioContainingIgnoreCase(@Param("usuario") String usuario);
+    public List<Usuario> findByNameContainingIgnoreCase(@Param("name") String name);
     public Optional<Usuario> findByUsuario(String usuario);
     
 }

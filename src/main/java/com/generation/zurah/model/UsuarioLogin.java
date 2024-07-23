@@ -1,6 +1,6 @@
 package com.generation.zurah.model;
 
-public class UserLogin {
+public class UsuarioLogin {
 	
 	private Long id;
 	private String name;

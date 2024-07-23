@@ -3,6 +3,9 @@ package com.generation.zurah.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.generation.zurah.model.Usuario;
+import com.generation.zurah.repository.CategoryRepository;
+import com.generation.zurah.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +34,12 @@ public class ProductController {
 	@Autowired
 	private ProductRepository productRepository;
 
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+
+	@Autowired
+	private CategoryRepository categoryRepository;
+
 	@GetMapping
 	public ResponseEntity<List<Product>> getAll() {
 		return ResponseEntity.ok(productRepository.findAll());
@@ -49,27 +58,46 @@ public class ProductController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Product> post(@Valid @RequestBody Product product) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(productRepository.save(product));
+    public ResponseEntity<Product> post(@Valid @RequestBody Product product) {
+        if (!categoryRepository.existsById(product.getCategory().getId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category not found with ID " + product.getCategory().getId(), null);
+        }
 
-	}
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(product.getUsuario().getId());
+        if (usuarioOptional.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with ID " + product.getUsuario().getId(), null);
+        }
 
-	@PutMapping
-	public ResponseEntity<Product> put(@Valid @RequestBody Product product) {
-		return productRepository.findById(product.getId())
-				.map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(productRepository.save(product)))
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-	}
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(productRepository.save(product));
+    }
 
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping("/{id}")
+    @PutMapping
+    public ResponseEntity<Product> put(@Valid @RequestBody Product product) {
+        if (productRepository.existsById(product.getId())) {
+            if (categoryRepository.existsById(product.getCategory().getId())) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(productRepository.save(product));
+            }
 
-	public void Delete(@PathVariable Long id) {
-		Optional<Product> product = productRepository.findById(id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category not found with ID " + product.getCategory().getId(), null);
+        }
 
-		if (product.isEmpty())
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
 
-		productRepository.deleteById(id);
-	}
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+
+    public void Delete(@PathVariable Long id) {
+        Optional<Product> product = productRepository.findById(id);
+
+        if (product.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        productRepository.deleteById(id);
+    }
 }
+
+
+
